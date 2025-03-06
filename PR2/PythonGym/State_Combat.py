@@ -44,4 +44,7 @@ class State_Shot_Enemy(State_Combat):
         super().__init__(agent)
 
     def execute(self, perception):
-        pass  # Este método se sobrescribirá en cada estado
+        if(perception[sensors["CAN_FIRE"]] == 1):
+            return actions["NOTHING"], True
+        else:
+            return actions["NOTHING"], False
