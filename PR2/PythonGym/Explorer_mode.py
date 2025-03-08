@@ -12,15 +12,16 @@ class Explorer_mode(State):
         accion=0
         disparo=False
 
-
-
+        
 
         return accion,disparo
     
     def Transit(self,perception):
         
-        for i in range (config.P_NEIGHBORHOOD_UP,config.P_NEIGHBORHOOD_LEFT):
-            if(perception[i]==config.O_PLAYER or perception[i]==config.O_SHELL):
+        if(perception[config.P_NEIGHBORHOOD_UP]==config.O_PLAYER or perception[config.P_NEIGHBORHOOD_UP]==config.O_SHELL or
+            perception[config.P_NEIGHBORHOOD_LEFT]==config.O_PLAYER or perception[config.P_NEIGHBORHOOD_LEFT]==config.O_SHELL or
+            perception[config.P_NEIGHBORHOOD_DOWN]==config.O_PLAYER or perception[config.P_NEIGHBORHOOD_DOWN]==config.O_SHELL or
+            perception[config.P_NEIGHBORHOOD_RIGHT]==config.O_PLAYER or perception[config.P_NEIGHBORHOOD_RIGHT]==config.O_SHELL):
                 return "Combat_mode"
 
         return self.id

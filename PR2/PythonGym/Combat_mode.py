@@ -35,8 +35,8 @@ class Combat_mode(State):
                 else:
                     accion=(direccion_peligro+2)%4
 
-        print("-------movemos a %d",accion)
-
+        print("-------movemos a ",accion)
+        print("--------------pos agente",perception[config.P_AGENT_Y],perception[config.P_AGENT_X])
         return accion+1,disparo
     
     def Transit(self,perception):
