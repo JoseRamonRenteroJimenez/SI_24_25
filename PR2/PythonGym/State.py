@@ -1,8 +1,22 @@
-from .constants import *
-
 class State:
-    def __init__(self, agent):
-        self.agent = agent  # Referencia al agente
+    def __init__(self, id):
+        self.id = id
 
-    def execute(self, perception):
-        pass  # Este método se sobrescribirá en cada estado
+    #Metodo que se llama al iniciar el estado
+    def Start(self):
+        print("Inicio del estado ")
+
+    #Metodo que se llama en cada actualización del estado
+    #devuelve las acciones (actuadores) que el agente realiza
+    def Update(self, perception):
+        return 0,True
+    
+    #método que se llama para decidir la transición del estado. Devuelve el id del estado nuevo
+    def Transit(self,perception):
+        return self.id
+
+
+    
+    #Metodo que se llama al finalizar el estado
+    def End(self):
+        print("fin del estado")

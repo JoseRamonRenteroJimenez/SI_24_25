@@ -1,4 +1,5 @@
 import random
+import time
 class BaseAgent:
     def __init__(self, id, name):
         self.id = id
@@ -26,4 +27,3 @@ class BaseAgent:
     def End(self, win):
         print("Agente finalizado")
         print("Victoria ",win)
-        
