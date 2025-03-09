@@ -8,7 +8,7 @@ class Explorer_mode(State):
 
     def Update(self, perception):
         print("-------Modo explorer")
-        
+        print("-------Inicio mirando a ",self.facing_dir," y mi último disparo fue hacia ",self.dir_shot)
         accion=0
         disparo=False
 

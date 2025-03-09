@@ -5,6 +5,9 @@ class StateMachine(State):
         super().__init__(id)
         self.states = states
         self.curentState = initial
+        self.states[self.curentState].facing_dir = 1
+        self.states[self.curentState].dir_shot =-1
+        
     
     #Metodo que se llama al iniciar la máquina de estado
     def Start(self):
@@ -19,6 +22,9 @@ class StateMachine(State):
         newState=self.states[self.curentState].Transit(perception)
 
         if newState != self.curentState:
+            #guardamos la info de a donde miramos y donde hemos disparado
+            self.states[newState].facing_dir=self.states[self.curentState].facing_dir
+            self.states[newState].dir_shot=self.states[self.curentState].dir_shot
             self.states[self.curentState].End()
             self.curentState=newState
             self.states[self.curentState].Start()

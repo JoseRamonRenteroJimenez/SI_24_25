@@ -1,6 +1,9 @@
 class State:
+    
     def __init__(self, id):
         self.id = id
+        self.dir_shot=-1
+        self.facing_dir=-1
 
     #Metodo que se llama al iniciar el estado
     def Start(self):
