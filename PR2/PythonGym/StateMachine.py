@@ -5,8 +5,10 @@ class StateMachine(State):
         super().__init__(id)
         self.states = states
         self.curentState = initial
-        self.states[self.curentState].facing_dir = 1
+        self.states[self.curentState].facing_dir = -1
         self.states[self.curentState].dir_shot =-1
+        self.states[self.curentState].last_move=0
+        self.states[self.curentState].CC_dist=0
         
     
     #Metodo que se llama al iniciar la máquina de estado

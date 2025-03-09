@@ -1,6 +1,6 @@
 from State import State
 import config
-
+from math import sqrt
 class Combat_mode(State):
 
     def __init__(self, id):
@@ -43,6 +43,7 @@ class Combat_mode(State):
             #nos posicionamos y disparamos
             self.dir_shot=direccion_peligro
             self.facing_dir=direccion_peligro
+            self.last_move=direccion_peligro+1
             print("-------Reposicionando a",direccion_peligro+1)
             accion=direccion_peligro
             disparar=True
@@ -73,10 +74,12 @@ class Combat_mode(State):
                     accion=(direccion_peligro+2)%4+1
                 else:
                     accion=((direccion_peligro+3)%4)+1
-            self.facing_dir=accion
+            self.facing_dir=accion-1
+            self.last_move=accion+1
 
         print("-------movemos a ",accion+1)
-        print("--------------pos agente",perception[config.P_AGENT_Y],perception[config.P_AGENT_X])
+
+        self.CC_dist= sqrt((perception[config.P_AGENT_X] - perception[config.P_COMMAND_CENTER_X])**2 +(perception[config.P_AGENT_Y] - perception[config.P_COMMAND_CENTER_Y])**2)
         return accion+1,disparar
     
     def Transit(self,perception):
