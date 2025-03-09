@@ -4,5 +4,3 @@ from ReactiveAgent import ReactiveAgent
 
 agent = ReactiveAgent("1","NJ-95")
 agentLoop(agent,True)
-
- 
