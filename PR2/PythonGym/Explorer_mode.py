@@ -29,13 +29,14 @@ class Explorer_mode(State):
         newCC_dist = sqrt((perception[config.P_AGENT_X] - perception[config.P_COMMAND_CENTER_X])**2 + (perception[config.P_AGENT_Y] - perception[config.P_COMMAND_CENTER_Y])**2)
         
         print("------- distancia a CC ", newCC_dist, "distancia anterior ", self.CC_dist, "diff =", self.CC_dist - newCC_dist)
+            
         print("------- Mirando", mirando_delante, " a distancia ", distancia_delante)
 
         # Check if the path ahead is clear and not blocked by unbreakable objects or other agents
-        if distancia_delante > config.C_EXPLO and mirando_delante != config.O_UNBREAKABLE and mirando_delante != config.O_OTHER:
+        if distancia_delante > config.C_EXPLO and mirando_delante != config.O_UNBREAKABLE:
             print("FM----- Free movement")
             accion = self.facing_dir + 1
-
+            
             # If the agent hasn't moved closer to the command center, change direction
             if self.CC_dist - newCC_dist < config.C_TOLERANCIA_MOVIMIENTO:
                 if self.facing_dir % 2 == 0:
@@ -65,7 +66,7 @@ class Explorer_mode(State):
                             accion = (self.facing_dir + 3) % 4 + 1
                 else:
                     # If the agent is in the same column as the command center
-                    if abs(perception[config.P_AGENT_X] - perception[config.P_COMMAND_CENTER_X]) < abs(config.C_EXPLO):
+                    if abs(perception[config.P_AGENT_X] - perception[config.P_COMMAND_CENTER_X]) < abs(config.C_EXPLO) and not(perception[self.facing_dir]==config.O_UNBREAKABLE and perception[self.facing_dir+4]<3):
                         print("MRV----- Restringido Vertical")
                         accion = random.randint(0, 1) + 1
                     else:
