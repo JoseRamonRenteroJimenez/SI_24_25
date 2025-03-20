@@ -93,13 +93,29 @@ class GoalOrientedAgent(BaseAgent):
     #no podemos iniciarlo en el start porque no conocemos el mapa ni las posiciones de los objetos
     def InitAgent(self,perception,map):
         #creamos el problema
-        #TODO inicializamos:
         # - creamos el problema con BCProblem
         # - inicializamos el mapa problem.InitMap
         # - inicializamos A*
         # - creamos un plan inicial
-        print("TODO aqui faltan cosas :)")
-        goal1CommanCenter = None
+        print("Init Goal Oriented Agent")
+        #Creamos el nodo inicial a partir de la percepción actual
+        initialNode = self._CreateInitialNode(perception)
+        #Creamos la meta por defecto (Command center) como el objetivo inicial 
+        goal1CommanCenter = self._CreateDefaultGoal(perception)
+        #Creamos el problema asociado, el entorno de BatlleCity
+        xSize, ySize = 15, 15
+        self.problem = BCProblem(initialNode, goal1CommanCenter, xSize, ySize)
+        #Inicializamos el mapa con los datos recibidos
+        self.problem.InitMap(map)
+        print("Mapa cargado")
+        #Inicializamos el A* con el problema creado
+        self.aStar = AStar(self.problem)
+        #Creamos un par inicial a partir de pa percepción y el mapa
+        self.plan = self._CreatePlan(perception, map)
+        print("Plan inicial generado")
+        GoalOrientedAgent.ShowPlan(self.plan)
+        
+        # Generamos objetivos adicionales
         goal2Life = self._CreateLifeGoal(perception)
         goal3Player = self._CreatePlayerGoal(perception)
         self.goalMonitor = GoalMonitor(self.problem,[goal1CommanCenter,goal2Life,goal3Player])
