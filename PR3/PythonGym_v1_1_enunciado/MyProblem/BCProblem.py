@@ -5,6 +5,7 @@ from MyProblem.BCNode import BCNode
 from States.AgentConsts import AgentConsts
 import sys
 import numpy as np
+import AgentConsts as AC
 
 #Clase que implementa el problema especifico que queremos resolver y que hereda de la calse
 #Problema genérico.
@@ -94,6 +95,48 @@ class BCProblem(Problem):
     @staticmethod
     def GetCost(value):
         #TODO: debes darle un coste a cada tipo de casilla del mapa.
+
+        ##NOTHING = 0
+        ##UNBREAKABLE = 1
+        ##BRICK = 2
+        ##COMMAND_CENTER = 3
+        ##PLAYER = 4
+        ##SHELL = 5 
+        ##OTHER = 6
+        ##LIFE = 7
+        ##SEMI_BREKABLE = 8
+        ##SEMI_UNBREKABLE = 9
+        
+        #optimización a base de descartar la mitad de los operandos
+        if(value%2==0):
+            if value==AC.NOTHING:#0
+                return 2
+            elif value==AC.BRICK:#2
+                return 2
+            elif value==AC.PLAYER:#4
+                return 4
+            elif value==AC.OTHER:#6
+                return 6
+            elif value==SEMI_BREKABLE:#8
+                return sys.maxsize
+            else
+                return sys.maxsize   
+        else{
+            if value==AC.UNBREAKABLE:#1
+                return sys.maxsize
+            elif value==AC.COMMAND_CENTER:#3
+                return 0
+            elif value== AC.SHELL:#5
+                return 0
+            elif value== AC.LIFE:#7
+                return 0
+            elif value== AC.SEMI_UNBREKABLE:#9
+                return sys.maxsize
+            else:
+                return sys.maxsize
+        }
+
+
         return sys.maxsize
     
     #crea un nodo y lo añade a successors (lista) con el padre indicado y la posición x,y en coordenadas mapa 
