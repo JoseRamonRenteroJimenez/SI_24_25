@@ -5,7 +5,7 @@ from MyProblem.BCNode import BCNode
 from States.AgentConsts import AgentConsts
 import sys
 import numpy as np
-import AgentConsts as AC
+
 
 #Clase que implementa el problema especifico que queremos resolver y que hereda de la calse
 #Problema genérico.
@@ -34,9 +34,9 @@ class BCProblem(Problem):
 
     #Calcula la heuristica del nodo en base al problema planteado (Se necesita reimplementar)
     def Heuristic(self, node):
-        #TODO: heurística del nodo
-        print("Aqui falta ncosas por hacer :) ")
-        return 0
+        #TODO EN PRUEBAS: heurística del nodo
+        print("Heuristica determina H="+abs(self.perception[AgentConsts.AGENT_X] - self.perception[AgentConsts.COMMAND_CENTER_X]) + abs(self.perception[AgentConsts.AGENT_Y]- self.perception[AgentConsts.COMMAND_CENTER_Y]))
+        return abs(self.perception[AgentConsts.AGENT_X] - self.perception[AgentConsts.COMMAND_CENTER_X]) + abs(self.perception[AgentConsts.AGENT_Y]- self.perception[AgentConsts.COMMAND_CENTER_Y])
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
@@ -109,32 +109,32 @@ class BCProblem(Problem):
         
         #optimización a base de descartar la mitad de los operandos
         if(value%2==0):
-            if value==AC.NOTHING:#0
+            if value==AgentConsts.NOTHING:#0
                 return 2
-            elif value==AC.BRICK:#2
+            elif value==AgentConsts.BRICK:#2
                 return 2
-            elif value==AC.PLAYER:#4
-                return 4
-            elif value==AC.OTHER:#6
+            elif value==AgentConsts.PLAYER:#4
+                return 10
+            elif value==AgentConsts.OTHER:#6
                 return 6
-            elif value==SEMI_BREKABLE:#8
+            elif value==AgentConsts.SEMI_BREKABLE:#8
                 return sys.maxsize
-            else
+            else:
                 return sys.maxsize   
-        else{
-            if value==AC.UNBREAKABLE:#1
+        else:
+            if value==AgentConsts.UNBREAKABLE:#1
                 return sys.maxsize
-            elif value==AC.COMMAND_CENTER:#3
+            elif value==AgentConsts.COMMAND_CENTER:#3
                 return 0
-            elif value== AC.SHELL:#5
+            elif value== AgentConsts.SHELL:#5
                 return 0
-            elif value== AC.LIFE:#7
+            elif value== AgentConsts.LIFE:#7
                 return 0
-            elif value== AC.SEMI_UNBREKABLE:#9
+            elif value== AgentConsts.SEMI_UNBREKABLE:#9
                 return sys.maxsize
             else:
                 return sys.maxsize
-        }
+        
 
 
         return sys.maxsize
