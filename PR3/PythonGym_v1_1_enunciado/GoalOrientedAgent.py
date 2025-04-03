@@ -39,17 +39,22 @@ class GoalOrientedAgent(BaseAgent):
     #Metodo que se llama en cada actualización del agente, y se proporciona le vector de percepciones
     #Devuelve la acción u el disparo si o no
     def Update(self, perception, map):
+        
         if perception == True or perception == False:
             return 0,True
+       
         #inicializamos el agente (no lo podemos hacer en el start porque no tenemos el mapa)
+       
         if not self.agentInit:
-            self.InitAgent(perception,map)
+            self.InitAgent(perception, map)
             self.agentInit = True
  
         #le damos update a la máquina de estados.
+        
         action, shot = self.stateMachine.Update(perception, map, self)
 
         #Actualizamos el plan refrescando la posición del player (meta 2)
+
         goal3Player = self._CreatePlayerGoal(perception)
         self.goalMonitor.UpdateGoals(goal3Player,2)
         if self.goalMonitor.NeedReplaning(perception,map,self):
@@ -58,15 +63,21 @@ class GoalOrientedAgent(BaseAgent):
         return action, shot
     
     #método interno que encapsula la creació nde un plan
-    def _CreatePlan(self,perception,map):
+    def _CreatePlan(self, perception, map):
         #currentGoal = self.problem.GetGoal()
         if self.goalMonitor != None:
-            #TODO creamos un plan, pasos:
-            #-con gualMonito, seleccionamos la meta actual (Que será la mas propicia => definir la estrategia a seguir).
-            #-le damos el modo inicial _CreateInitialNode
-            #-establecer la meta actual al problema para que A* sepa cual es.
-            #-Calcular el plan usando A*
+            # TODO creamos un plan, pasos:
+            # -con gualMonito, seleccionamos la meta actual (Que será la mas propicia => definir la estrategia a seguir).
+            # -le damos el modo inicial _CreateInitialNode
+            # -establecer la meta actual al problema para que A* sepa cual es.
+            # -Calcular el plan usando A*
             print("TODO aqui faltan cosas :)")
+            
+            
+            nodoInicialX, nodoInicialY = perception[AgentConsts.AGENT_X],perception[AgentConsts.AGENT_Y]
+            nodoMetaX, nodoMetaY = self.goalMonitor.SelectGoal().x, self.goalMonitor.SelectGoal().y
+            self.problem.initial.x, self.problem.initial.y = nodoInicialX, nodoInicialY
+            self.problem.goal.x, self.problem.goal.y = nodoMetaX, nodoMetaY
         return self.aStar.GetPlan()
         
     @staticmethod
@@ -118,7 +129,7 @@ class GoalOrientedAgent(BaseAgent):
         # Generamos objetivos adicionales
         goal2Life = self._CreateLifeGoal(perception)
         goal3Player = self._CreatePlayerGoal(perception)
-        self.goalMonitor = GoalMonitor(self.problem,[goal1CommanCenter,goal2Life,goal3Player])
+        self.goalMonitor = GoalMonitor(self.problem, [goal1CommanCenter, goal2Life, goal3Player])
 
     #muestra un plan por consola
     @staticmethod

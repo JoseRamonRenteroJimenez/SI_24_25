@@ -7,7 +7,7 @@ class AStar:
     def __init__(self, problem):
         self.open = [] # lista de abiertos o frontera de exploración
         self.precessed = set() # set, conjunto de cerrados (más eficiente que una lista)
-        self.problem = problem #problema a resolver
+        self.problem = problem # problema a resolver
 
     def GetPlan(self):
         findGoal = False
@@ -22,8 +22,30 @@ class AStar:
         self.precessed.clear()
         self.open.append(self.problem.Initial())
         path = []
-        #mientras no encontremos la meta y haya elementos en open....
-        #TODO implementar el bucle de búsqueda del algoritmo A*
+        
+        nodoObj = self.problem.Initial()
+        
+        while findGoal == False and len(self.open) > 0:
+            nodoObj = self.open.pop(0)
+            if (not self.precessed.__contains__(nodoObj)):
+                
+                self.open.append(nodoObj.GetSucessors())
+                self.precessed.add(nodoObj)
+            
+                #Actualizar etiquetas
+                nodoObj.SetH(self.problem.Heuristic(nodoObj))
+                nodoObj.SetG(nodoObj.G() + 1)
+            
+                if(nodoObj.IsEqual(self.problem.Goal())):
+                    findGoal = True
+        
+        if(findGoal == True):
+            self.precessed.add(nodoObj)
+            path = self.problem.ReconstructPath(nodoObj)
+            path = path[::-1]
+            
+        # mientras no encontremos la meta y haya elementos en open....
+        # TODO implementar el bucle de búsqueda del algoritmo A*
         return path
 
     #nos permite configurar un nodo (node) con el padre y la nueva G
@@ -49,7 +71,11 @@ class AStar:
     #reconstruye el path desde la meta encontrada.
     def ReconstructPath(self, goal):
         path = []
+        node = goal
         #TODO: devuelve el path invertido desde la meta hasta que el padre sea None.
+        while node != None:
+            path.append(node)
+            node = node.parent
         return path
 
 

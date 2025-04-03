@@ -5,4 +5,4 @@ from GoalOrientedAgent import GoalOrientedAgent
 
 
 agent = GoalOrientedAgent("1","NJ-95")
-agentLoop(agent,True)
+agentLoop(agent, True)
