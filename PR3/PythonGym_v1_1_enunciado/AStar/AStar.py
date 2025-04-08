@@ -18,35 +18,49 @@ class AStar:
         #GetSucesorInOpen(sucesor) nos devolverá None si no lo encuentra, si lo encuentra
         #es que ese sucesor ya está en la frontera de exploración, DEBEMOS MIRAR SI EL NUEVO COSTE ES MENOR QUE EL QUE TENIA ALMACENADO
         #SI esto es asi, hay que cambiarle el padre y setearle el nuevo coste.
-        self.open.clear()
-        self.precessed.clear()
-        self.open.append(self.problem.Initial())
-        path = []
-        
-        nodoObj = self.problem.Initial()
-        
-        while findGoal == False and len(self.open) > 0:
-            nodoObj = self.open.pop(0)
-            if (not self.precessed.__contains__(nodoObj)):
-                
-                self.open.append(nodoObj.GetSucessors())
-                self.precessed.add(nodoObj)
-            
-                #Actualizar etiquetas
-                nodoObj.SetH(self.problem.Heuristic(nodoObj))
-                nodoObj.SetG(nodoObj.G() + 1)
-            
-                if(nodoObj.IsEqual(self.problem.Goal())):
-                    findGoal = True
-        
-        if(findGoal == True):
-            self.precessed.add(nodoObj)
-            path = self.problem.ReconstructPath(nodoObj)
-            path = path[::-1]
-            
         # mientras no encontremos la meta y haya elementos en open....
         # TODO implementar el bucle de búsqueda del algoritmo A*
-        return path
+        
+        self.open.clear()
+        self.precessed.clear()
+        nodoObj = self.problem.Initial()
+        self._configureNode(nodoObj, None, 0)
+        self.open.append(nodoObj)
+        path = []
+        cent = True
+        
+        while len(self.open) > 0 and not cent:
+            #TODO: Ordenar la lista de abiertos
+            nodoObj = self.open.pop(0)
+
+            if nodoObj == self.problem.goal():
+                cent = True
+            else:
+                
+                sucesores = nodoObj.GetSucessors()
+                for s in sucesores:
+                    # Hacemos cosas si el nodo aún no ha sido procesado
+                    if s not in self.precessed:
+                        g = nodoObj.G() + self.problem.GetGCost(s)
+                        
+                        abierto = self.GetSucesorInOpen(s)
+                        if abierto is None:
+                            # TODO Configurar nodo????
+                            self._ConfigureNode(s, nodoObj, g)
+                            s.SetH(self.problem.Heuristic(s))
+                            self.open.append(s)
+                        else:
+                            # Usar mejor nodo si ya hemos encontrado una ruta
+                            if g < abierto.G():
+                                self._ConfigureNode(abierto, nodoObj, g)
+                                abierto.SetH(self.problem.Heuristic(abierto))
+                self.precessed.add(nodoObj)
+                # vuelve a la siguiente iteración
+        
+        if(cent == True):
+            path = self.ReconstructPath(nodoObj)
+        
+        return path[::-1] 
 
     #nos permite configurar un nodo (node) con el padre y la nueva G
     def _ConfigureNode(self, node, parent, newG):

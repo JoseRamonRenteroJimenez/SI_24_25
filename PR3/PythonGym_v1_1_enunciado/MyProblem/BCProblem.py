@@ -32,9 +32,16 @@ class BCProblem(Problem):
 
     #Calcula la heuristica del nodo en base al problema planteado (Se necesita reimplementar)
     def Heuristic(self, node):
+        '''
+        node - nodo al que se le quiere calcular la heurística
+        node.x - coordenada x del nodo objetivo
+        node.y - coordenada y del nodo objetivo
+        Calcula la heurística del nodo en base a la distancia Manhattan entre el nodo y el objetivo.
+        abs(node.x - self.x) + abs(node.y- self.y)
+        '''
         #TODO EN PRUEBAS: heurística del nodo
-        print("Heuristica determina H="+abs(self.perception[AgentConsts.AGENT_X] - self.perception[AgentConsts.COMMAND_CENTER_X]) + abs(self.perception[AgentConsts.AGENT_Y]- self.perception[AgentConsts.COMMAND_CENTER_Y]))
-        return abs(self.perception[AgentConsts.AGENT_X] - self.perception[AgentConsts.COMMAND_CENTER_X]) + abs(self.perception[AgentConsts.AGENT_Y]- self.perception[AgentConsts.COMMAND_CENTER_Y])
+        print("Heuristica determina H="+abs(node.x - self.goal.x) + abs(node.y- self.goal.y))
+        return abs(node.x - self.goal.x) + abs(node.y- self.goal.y)
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
@@ -63,7 +70,7 @@ class BCProblem(Problem):
     # parámetro
     @staticmethod
     def CanMove(value):
-        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE and value != AgentConsts.SEMI_UNBREKABLE
+        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE # and value != AgentConsts.SEMI_UNBREKABLE
     
     #convierte coordenadas mapa en formato vector a matriz
     @staticmethod
