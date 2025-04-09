@@ -78,6 +78,10 @@ class GoalOrientedAgent(BaseAgent):
             nodoMetaX, nodoMetaY = self.goalMonitor.SelectGoal().x, self.goalMonitor.SelectGoal().y
             self.problem.initial.x, self.problem.initial.y = nodoInicialX, nodoInicialY
             self.problem.goal.x, self.problem.goal.y = nodoMetaX, nodoMetaY
+            
+            # Atención // Esto necesita revisión
+            if self.problem.goal.monitor != None:
+                self.problem.goal.monitor = self.goalMonitor
         return self.aStar.GetPlan()
         
     @staticmethod

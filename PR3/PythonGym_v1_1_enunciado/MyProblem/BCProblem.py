@@ -41,7 +41,7 @@ class BCProblem(Problem):
         '''
         #TODO EN PRUEBAS: heurística del nodo
         print("Heuristica determina H="+abs(node.x - self.goal.x) + abs(node.y- self.goal.y))
-        return abs(node.x - self.goal.x) + abs(node.y- self.goal.y)
+        return abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):

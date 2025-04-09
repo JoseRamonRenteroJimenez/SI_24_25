@@ -31,6 +31,7 @@ class AStar:
         
         while len(self.open) > 0 and not cent:
             #TODO: Ordenar la lista de abiertos
+            self.open = sorted(self.open, key=lambda x: x.F())
             nodoObj = self.open.pop(0)
 
             if nodoObj == self.problem.goal():
