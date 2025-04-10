@@ -1,4 +1,4 @@
-
+import heapq as heapq
 
 #Algoritmo A* genérico que resuelve cualquier problema descrito usando la plantilla de la
 #la calse Problem que tenga como nodos hijos de la clase Node
@@ -24,15 +24,14 @@ class AStar:
         self.open.clear()
         self.precessed.clear()
         nodoObj = self.problem.Initial()
-        self._configureNode(nodoObj, None, 0)
-        self.open.append(nodoObj)
+        self._ConfigureNode(nodoObj, None, 0)
+        heapq.heappush(self.open, [nodoObj.F(), nodoObj])
         path = []
         cent = True
         
         while len(self.open) > 0 and not cent:
             #TODO: Ordenar la lista de abiertos
-            self.open = sorted(self.open, key=lambda x: x.F())
-            nodoObj = self.open.pop(0)
+            nodoObj = heapq.heappop(self.open)
 
             if nodoObj == self.problem.goal():
                 cent = True
@@ -49,7 +48,7 @@ class AStar:
                             # TODO Configurar nodo????
                             self._ConfigureNode(s, nodoObj, g)
                             s.SetH(self.problem.Heuristic(s))
-                            self.open.append(s)
+                            heapq.heappush(self.open, [s.F(), s])
                         else:
                             # Usar mejor nodo si ya hemos encontrado una ruta
                             if g < abierto.G():

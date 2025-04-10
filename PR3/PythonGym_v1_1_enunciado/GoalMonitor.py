@@ -22,11 +22,13 @@ class GoalMonitor:
             return True
         #TODO definir la estrategia de cuando queremos recalcular
         #puede ser , por ejemplo cada cierto tiempo o cuanod tenemos poca vida.
+        
         return False
     
     #selecciona la meta mas adecuada al estado actual
     def SelectGoal(self, perception, map, agent):
         #TODO definir la estrategia del cambio de meta
+        
         print("TODO aqui faltan cosas :)")
         return self.goals[random.randint(0,len(self.goals))]
     

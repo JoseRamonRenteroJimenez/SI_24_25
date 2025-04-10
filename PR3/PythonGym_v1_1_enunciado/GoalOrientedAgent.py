@@ -64,6 +64,7 @@ class GoalOrientedAgent(BaseAgent):
     
     #método interno que encapsula la creació nde un plan
     def _CreatePlan(self, perception, map):
+        print("Estoy creando un plan")
         #currentGoal = self.problem.GetGoal()
         if self.goalMonitor != None:
             # TODO creamos un plan, pasos:
@@ -75,7 +76,8 @@ class GoalOrientedAgent(BaseAgent):
             
             
             nodoInicialX, nodoInicialY = perception[AgentConsts.AGENT_X],perception[AgentConsts.AGENT_Y]
-            nodoMetaX, nodoMetaY = self.goalMonitor.SelectGoal().x, self.goalMonitor.SelectGoal().y
+            currentPlan = self.goalMonitor.SelectGoal()
+            nodoMetaX, nodoMetaY = currentPlan.x, currentPlan.y
             self.problem.initial.x, self.problem.initial.y = nodoInicialX, nodoInicialY
             self.problem.goal.x, self.problem.goal.y = nodoMetaX, nodoMetaY
             
