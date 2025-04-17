@@ -38,18 +38,12 @@ class GoalMonitor:
             per_A_H_Y= abs(perception[AgentConsts.AGENT_Y]-perception[AgentConsts.LIFE_Y])
 
             #estamos en la misma columna o fila que player a distancia_agente_jugador, tenemos 2 de vida y/o no hay disponibles vidas extra
-            if per_A_J_X ==0 or per_A_J_Y == 0 and
-            per_A_J_X + per_A_J_Y <= self.Distancia_agente_player and 
-            self.goals !=self.GOAL_PLAYER and 
-            perception[AgentConsts.HEALTH]>=2 or perception[AgentConsts.LIFE_X] + perception[AgentConsts.LIFE_Y]<0:
+            if per_A_J_X ==0 or per_A_J_Y == 0 and per_A_J_X + per_A_J_Y <= self.Distancia_agente_player and self.goals !=self.GOAL_PLAYER and perception[AgentConsts.HEALTH]>=2 or perception[AgentConsts.LIFE_X] + perception[AgentConsts.LIFE_Y]<0:
                 self.lastTime = perception[AgentConsts.TIME]
                 return True
             
             #estamos mas cerca que player de la vida o tenemos solo 1 vida (priorizamos conseguir más vidas)
-            elif per_A_H_X + per_A_H_Y < per_J_H_X+ per_J_H_Y or
-            (perception[AgentConsts.HEALTH]<2 and 
-            perception[AgentConsts.LIFE_X] + perception[AgentConsts.LIFE_Y]>0) 
-            and self.goals !=self.GOAL_LIFE:
+            elif per_A_H_X + per_A_H_Y < per_J_H_X+ per_J_H_Y or (perception[AgentConsts.HEALTH]<2 and perception[AgentConsts.LIFE_X] + perception[AgentConsts.LIFE_Y]>0) and self.goals !=self.GOAL_LIFE:
                 self.lastTime = perception[AgentConsts.TIME]
                 return True
             
