@@ -11,7 +11,7 @@ class AStar:
 
     def GetPlan(self):
         findGoal = False
-        #TODO implementar el algoritmo A*
+        #TODO EN PRUEBAS implementar el algoritmo A*
         #cosas a tener en cuenta:
         #Si el número de sucesores es 0 es que el algoritmo no ha encontrado una solución, devolvemos el path vacio []
         #Hay que invertir el path para darlo en el orden correcto al devolverlo (path[::-1])
@@ -19,7 +19,7 @@ class AStar:
         #es que ese sucesor ya está en la frontera de exploración, DEBEMOS MIRAR SI EL NUEVO COSTE ES MENOR QUE EL QUE TENIA ALMACENADO
         #SI esto es asi, hay que cambiarle el padre y setearle el nuevo coste.
         # mientras no encontremos la meta y haya elementos en open....
-        # TODO implementar el bucle de búsqueda del algoritmo A*
+        # TODO EN PRUEBAS implementar el bucle de búsqueda del algoritmo A*
         
         self.open.clear()
         self.precessed.clear()
@@ -30,7 +30,7 @@ class AStar:
         cent = True
         
         while len(self.open) > 0 and not cent:
-            #TODO: Ordenar la lista de abiertos
+            #TODO EN PRUEBAS: Ordenar la lista de abiertos
             nodoObj = heapq.heappop(self.open)
 
             if nodoObj == self.problem.goal():
@@ -66,8 +66,8 @@ class AStar:
     def _ConfigureNode(self, node, parent, newG):
         node.SetParent(parent)
         node.SetG(newG)
-        #TODO Setearle la heuristica que está implementada en el problema. (si ya la tenía será la misma pero por si reutilizais este método para otras cosas)
-        #node.SetH(parent.H)
+        #TODO EN PRUEBAS Setearle la heuristica que está implementada en el problema. (si ya la tenía será la misma pero por si reutilizais este método para otras cosas)
+        node.SetH(parent.H)
 
     #nos dice si un sucesor está en abierta. Si esta es que ya ha sido expandido y tendrá un coste, comprobar que le nuevo camino no es más eficiente
     #En caso de serlos, _ConfigureNode para setearle el nuevo padre y el nuevo G, asi como su heurística
@@ -86,7 +86,7 @@ class AStar:
     def ReconstructPath(self, goal):
         path = []
         node = goal
-        #TODO: devuelve el path invertido desde la meta hasta que el padre sea None.
+        #TODO EN PRUEBAS devuelve el path invertido desde la meta hasta que el padre sea None.
         while node != None:
             path.append(node)
             node = node.parent
