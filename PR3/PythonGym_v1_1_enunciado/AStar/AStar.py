@@ -36,7 +36,6 @@ class AStar:
             if nodoObj == self.problem.goal():
                 cent = True
             else:
-                
                 sucesores = nodoObj.GetSucessors()
                 for s in sucesores:
                     # Hacemos cosas si el nodo aún no ha sido procesado

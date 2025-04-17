@@ -30,7 +30,7 @@ class GoalMonitor:
         #TODO definir la estrategia del cambio de meta
         
         print("TODO aqui faltan cosas :)")
-        return self.goals[random.randint(0,len(self.goals))]
+        return self.goals[self.GOAL_COMMAND_CENTRER]
     
     def UpdateGoals(self,goal, goalId):
         self.goals[goalId] = goal
