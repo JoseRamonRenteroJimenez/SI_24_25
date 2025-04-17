@@ -15,8 +15,6 @@ class LGymConnect:
 		self.host = host
 		self.bufferSide = bufferSize #1024
 	
-	
-	
 	def serverProgram(self,GetData):
 		server_socket = socket.socket()  # get instance
 		# look closely. The bind() function takes tuple as argument

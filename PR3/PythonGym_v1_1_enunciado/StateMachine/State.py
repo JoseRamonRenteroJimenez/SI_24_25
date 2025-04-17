@@ -14,8 +14,6 @@ class State:
     #método que se llama para decidir la transición del estado. Devuelve el id del estado nuevo
     def Transit(self,perception, map):
         return self.id
-
-
     
     #Metodo que se llama al finalizar el estado
     def End(self):

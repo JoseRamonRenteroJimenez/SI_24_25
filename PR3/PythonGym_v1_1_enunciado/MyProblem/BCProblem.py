@@ -62,7 +62,6 @@ class BCProblem(Problem):
             successors.append(self.CreateNode(successors, node, node.x+1, node.y))
         
         print("Aqui falta ncosas por hacer :) ")
-        
         return successors[::-1]
     
     # métodos estáticos
