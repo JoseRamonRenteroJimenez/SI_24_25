@@ -42,6 +42,13 @@ class AStar:
             
             for s in sucesores:
                 # Hacemos cosas si el nodo aún no ha sido procesado
+                
+                # Este in tiene muchas más operaciones por dentro de lo que parece.
+                # Parece ser que hace algún tipo de == o hash para ver si el nodo ya está en el conjunto.
+                # Aunque sean instancias diferentes, si tienen las mismas coordenadas, para nosotros son iguales.
+                # Por esto, he sobreescrito el método __eq__ (==) en la clase BCNode.
+                
+                #También es necesario hasearlo, ya que estamos usando un set
                 if s in self.precessed:
                     continue
                 

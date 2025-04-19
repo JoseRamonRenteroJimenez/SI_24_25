@@ -25,6 +25,7 @@ class ExecutePlan(State):
         plan = agent.GetPlan()
         if len(plan) == 0 : # no tengo un plan para conseguir mis objetivos, me quedo quieto.
             agent.goalMonitor.ForceToRecalculate()
+            print("\033[92mNo tengo plan\033[0m")
             return AgentConsts.NO_MOVE,False
         
         nextNode = plan[0]

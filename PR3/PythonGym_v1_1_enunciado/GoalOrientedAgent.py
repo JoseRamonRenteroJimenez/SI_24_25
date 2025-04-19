@@ -65,7 +65,6 @@ class GoalOrientedAgent(BaseAgent):
     #método interno que encapsula la creació nde un plan
     def _CreatePlan(self, perception, map):
         print("Estoy creando un plan")
-        print("Estoy creando un plan")
         # 1) refrescar el mapa en el problema
         self.problem.InitMap(map)
 

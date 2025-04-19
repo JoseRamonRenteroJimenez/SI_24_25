@@ -10,11 +10,18 @@ class BCNode(Node):
         self.x = int(x)
         self.y = int(y)
     
+    
     def IsEqual(self,node):
         if((self.x == node.x) and (self.y == node.y)):
             return True
         return False
 
-    # Define the less-than operation for BCProblem based on g values
-    def __lt__(self, other):
+    # Operaciones propias añadidas
+    def __lt__(self, other):    
         return self.F() < other.F()
+    
+    def __eq__(self, other):
+        return isinstance(other, BCNode) and self.x == other.x and self.y == other.y
+    
+    def __hash__(self):
+        return hash((self.x, self.y))
