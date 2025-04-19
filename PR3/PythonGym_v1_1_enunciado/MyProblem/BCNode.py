@@ -14,3 +14,7 @@ class BCNode(Node):
         if((self.x == node.x) and (self.y == node.y)):
             return True
         return False
+
+    # Define the less-than operation for BCProblem based on g values
+    def __lt__(self, other):
+        return self.g < other.g

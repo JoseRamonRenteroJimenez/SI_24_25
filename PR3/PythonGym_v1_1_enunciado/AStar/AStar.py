@@ -10,7 +10,6 @@ class AStar:
         self.problem = problem # problema a resolver
 
     def GetPlan(self):
-        findGoal = False
         #TODO EN PRUEBAS implementar el algoritmo A*
         #cosas a tener en cuenta:
         #Si el número de sucesores es 0 es que el algoritmo no ha encontrado una solución, devolvemos el path vacio []
@@ -33,7 +32,7 @@ class AStar:
             #TODO EN PRUEBAS: Ordenar la lista de abiertos
             f, nodoObj = heapq.heappop(self.open)
 
-            if nodoObj == self.problem.goal:
+            if nodoObj == self.problem.GetGoal():
                 cent = True
             else:
                 sucesores = self.problem.GetSucessors(nodoObj)
@@ -41,7 +40,6 @@ class AStar:
                     # Hacemos cosas si el nodo aún no ha sido procesado
                     if s not in self.precessed:
                         g = nodoObj.G() + self.problem.GetGCost(s)
-                        
                         abierto = self.GetSucesorInOpen(s)
                         if abierto is None:
                             # TODO Configurar nodo????
@@ -77,8 +75,8 @@ class AStar:
         while found == None and i < len(self.open):
             node = self.open[i]
             i += 1
-            if node.IsEqual(sucesor):
-                found = node
+            if node[1].IsEqual(sucesor):
+                found = node[1]
         return found
 
 
