@@ -40,27 +40,36 @@ class BCProblem(Problem):
         abs(node.x - self.x) + abs(node.y- self.y)
         '''
         #TODO EN PRUEBAS: heurística del nodo
-        print("Heuristica determina H="+abs(node.x - self.goal.x) + abs(node.y- self.goal.y))
-        return abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
+        h = abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
+        print(f"Heurística H = {h}")
+        return h
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
         successors = []
         # TODO: sucesores de un nodo dado
         
+        for newX, newY in ((0, -1), (0, 1), (-1, 0), (1, 0)):
+            x = node.x + newX
+            y = node.y + newY
+            if x >= 0 and x < self.xSize and y >= 0 and y < self.ySize:
+                if self.CanMove(self.map[x][y]):
+                    successors.append(self.CreateNode(successors, node, x, y))
+        
+        '''
         # Arriba
-        if(self.CanMove(self.map[node.x][node.y-1])):
+        if(self.CanMove(self.map[node.x][node.y-1]) and node.y-1>=0):
             successors.append(self.CreateNode(successors, node, node.x, node.y-1))
         # Abajo
-        if(self.CanMove(self.map[node.x][node.y+1])):
+        if(self.CanMove(self.map[node.x][node.y+1]) and node.y+1<self.ySize):
             successors.append(self.CreateNode(successors, node, node.x, node.y+1))
         # Izquierda
-        if(self.CanMove(self.map[node.x-1][node.y])):
+        if(self.CanMove(self.map[node.x-1][node.y]) and node.x-1>=0):
             successors.append(self.CreateNode(successors, node, node.x-1, node.y))
         # Derecha
-        if(self.CanMove(self.map[node.x+1][node.y])):
+        if(self.CanMove(self.map[node.x+1][node.y]) and node.x+1<self.xSize):
             successors.append(self.CreateNode(successors, node, node.x+1, node.y))
-        
+        '''
         print("Aqui falta ncosas por hacer :) ")
         return successors[::-1]
     
@@ -158,10 +167,11 @@ class BCProblem(Problem):
     #crea un nodo y lo añade a successors (lista) con el padre indicado y la posición x,y en coordenadas mapa 
     def CreateNode(self,successors,parent,x,y):
         value=self.map[x][y]
-        g=BCProblem.GetCost(value)
+        g=BCProblem.GetCost(value) + parent.G()
         rightNode = BCNode(parent,g,value,x,y)
         rightNode.SetH(self.Heuristic(rightNode))
-        successors.append(rightNode)
+        return rightNode
+        #successors.append(rightNode)
 
     #Calcula el coste de ir del nodo from al nodo to (Se necesita reimplementar)
     def GetGCost(self, nodeTo):

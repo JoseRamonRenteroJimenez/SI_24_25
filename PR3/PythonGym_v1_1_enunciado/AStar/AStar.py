@@ -25,18 +25,18 @@ class AStar:
         self.precessed.clear()
         nodoObj = self.problem.Initial()
         self._ConfigureNode(nodoObj, None, 0)
-        heapq.heappush(self.open, [nodoObj.F(), nodoObj])
+        heapq.heappush(self.open, (nodoObj.F(), nodoObj))
         path = []
-        cent = True
+        cent = False
         
         while len(self.open) > 0 and not cent:
             #TODO EN PRUEBAS: Ordenar la lista de abiertos
-            nodoObj = heapq.heappop(self.open)
+            f, nodoObj = heapq.heappop(self.open)
 
-            if nodoObj == self.problem.goal():
+            if nodoObj == self.problem.goal:
                 cent = True
             else:
-                sucesores = nodoObj.GetSucessors()
+                sucesores = self.problem.GetSucessors(nodoObj)
                 for s in sucesores:
                     # Hacemos cosas si el nodo aún no ha sido procesado
                     if s not in self.precessed:
