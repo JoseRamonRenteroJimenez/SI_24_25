@@ -22,50 +22,52 @@ class AStar:
         
         self.open.clear()
         self.precessed.clear()
+        
         nodoObj = self.problem.Initial()
         self._ConfigureNode(nodoObj, None, 0)
         heapq.heappush(self.open, (nodoObj.F(), nodoObj))
-        path = []
-        cent = False
         
-        while len(self.open) > 0 and not cent:
+        while len(self.open) > 0:
             #TODO EN PRUEBAS: Ordenar la lista de abiertos
             f, nodoObj = heapq.heappop(self.open)
 
+            if nodoObj in self.precessed:
+                continue
+            
             if nodoObj == self.problem.GetGoal():
-                cent = True
-            else:
-                sucesores = self.problem.GetSucessors(nodoObj)
-                for s in sucesores:
-                    # Hacemos cosas si el nodo aún no ha sido procesado
-                    if s not in self.precessed:
-                        g = nodoObj.G() + self.problem.GetGCost(s)
-                        abierto = self.GetSucesorInOpen(s)
-                        if abierto is None:
-                            # TODO Configurar nodo????
-                            self._ConfigureNode(s, nodoObj, g)
-                            s.SetH(self.problem.Heuristic(s))
-                            heapq.heappush(self.open, [s.F(), s])
-                        else:
-                            # Usar mejor nodo si ya hemos encontrado una ruta
-                            if g < abierto.G():
-                                self._ConfigureNode(abierto, nodoObj, g)
-                                abierto.SetH(self.problem.Heuristic(abierto))
-                self.precessed.add(nodoObj)
-                # vuelve a la siguiente iteración
-        
-        if(cent == True):
-            path = self.ReconstructPath(nodoObj)
-        
-        return path[::-1] 
+                return self.ReconstructPath(nodoObj)[::-1]
+            
+            self.precessed.add(nodoObj)
+            sucesores = self.problem.GetSucessors(nodoObj)
+            
+            for s in sucesores:
+                # Hacemos cosas si el nodo aún no ha sido procesado
+                if s in self.precessed:
+                    continue
+                
+                g = nodoObj.G() + self.problem.GetGCost(s)
+                abierto = self.GetSucesorInOpen(s)
+                
+                if abierto is None:
+                    # TODO Configurar nodo????
+                    self._ConfigureNode(s, nodoObj, g)
+                    heapq.heappush(self.open, (s.F(), s))
+                elif g < abierto.G():
+                    # Usar mejor nodo si ya hemos encontrado una ruta
+                        self._ConfigureNode(abierto, nodoObj, g)
+                        heapq.heappush(self.open, (abierto.F(), abierto))
+            # vuelve a la siguiente iteración
+
+        return None
 
     #nos permite configurar un nodo (node) con el padre y la nueva G
     def _ConfigureNode(self, node, parent, newG):
         node.SetParent(parent)
         node.SetG(newG)
+        node.SetH(self.problem.Heuristic(node))
         #TODO EN PRUEBAS Setearle la heuristica que está implementada en el problema. (si ya la tenía será la misma pero por si reutilizais este método para otras cosas)
-        if(node.parent != None):
-            node.SetH(parent.H)
+        #if(node.parent != None):
+        #    node.SetH(parent.H)
 
     #nos dice si un sucesor está en abierta. Si esta es que ya ha sido expandido y tendrá un coste, comprobar que le nuevo camino no es más eficiente
     #En caso de serlos, _ConfigureNode para setearle el nuevo padre y el nuevo G, asi como su heurística
@@ -73,10 +75,10 @@ class AStar:
         i = 0
         found = None
         while found == None and i < len(self.open):
-            node = self.open[i]
+            f, node = self.open[i]
             i += 1
-            if node[1].IsEqual(sucesor):
-                found = node[1]
+            if node.IsEqual(sucesor):
+                found = node
         return found
 
 

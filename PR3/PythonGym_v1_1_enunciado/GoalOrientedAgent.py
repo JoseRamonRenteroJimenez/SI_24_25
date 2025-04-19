@@ -58,13 +58,33 @@ class GoalOrientedAgent(BaseAgent):
         goal3Player = self._CreatePlayerGoal(perception)
         self.goalMonitor.UpdateGoals(goal3Player,2)
         if self.goalMonitor.NeedReplaning(perception,map,self):
-            self.problem.InitMap(map) ## refrescamos el mapa
+            #self.problem.InitMap(map) ## refrescamos el mapa
             self.plan=self._CreatePlan(perception, map)
         return action, shot
     
     #método interno que encapsula la creació nde un plan
     def _CreatePlan(self, perception, map):
         print("Estoy creando un plan")
+        print("Estoy creando un plan")
+        # 1) refrescar el mapa en el problema
+        self.problem.InitMap(map)
+
+        # 2) seleccionar la meta más adecuada
+        #    firma: SelectGoal(perception, map, agent)
+        new_goal = self.goalMonitor.SelectGoal(perception, map, self)
+        self.problem.SetGoal(new_goal)
+
+        # 3) construir y fijar el nodo inicial
+        initial_node = self._CreateInitialNode(perception)
+        self.problem.SetInitial(initial_node)
+
+        # 4) lanzar un A* fresco sobre el problema
+        self.aStar = AStar(self.problem)
+        plan = self.aStar.GetPlan() or []   # siempre lista
+
+        print(f"Plan de longitud {len(plan)}")
+        return plan
+        '''
         #currentGoal = self.problem.GetGoal()
         if self.goalMonitor != None:
             # TODO creamos un plan, pasos:
@@ -85,6 +105,8 @@ class GoalOrientedAgent(BaseAgent):
             if self.problem.goal.monitor != None:
                 self.problem.goal.monitor = self.goalMonitor
         return self.aStar.GetPlan()
+        
+        '''
         
     @staticmethod
     def CreateNodeByPerception(perception, value, perceptionID_X, perceptionID_Y,ySize):
@@ -127,15 +149,16 @@ class GoalOrientedAgent(BaseAgent):
         print("Mapa cargado")
         #Inicializamos el A* con el problema creado
         self.aStar = AStar(self.problem)
-        #Creamos un par inicial a partir de pa percepción y el mapa
-        self.plan = self._CreatePlan(perception, map)
-        print("Plan inicial generado")
-        GoalOrientedAgent.ShowPlan(self.plan)
         
         # Generamos objetivos adicionales
         goal2Life = self._CreateLifeGoal(perception)
         goal3Player = self._CreatePlayerGoal(perception)
         self.goalMonitor = GoalMonitor(self.problem, [goal1CommanCenter, goal2Life, goal3Player])
+        #Creamos un par inicial a partir de pa percepción y el mapa
+        self.plan = self._CreatePlan(perception, map)
+        print("Plan inicial generado")
+        GoalOrientedAgent.ShowPlan(self.plan)
+        self.agentInit = True
 
     #muestra un plan por consola
     @staticmethod

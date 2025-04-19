@@ -17,4 +17,4 @@ class BCNode(Node):
 
     # Define the less-than operation for BCProblem based on g values
     def __lt__(self, other):
-        return self.g < other.g
+        return self.F() < other.F()

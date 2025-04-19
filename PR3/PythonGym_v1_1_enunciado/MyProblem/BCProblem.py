@@ -49,10 +49,11 @@ class BCProblem(Problem):
         successors = []
         # TODO: sucesores de un nodo dado
         
-        for newX, newY in ((0, -1), (0, 1), (-1, 0), (1, 0)):
+        for newX, newY in ((0, -1), (-1, 0), (0, 1), (1, 0)):
             x = node.x + newX
             y = node.y + newY
             if x >= 0 and x < self.xSize and y >= 0 and y < self.ySize:
+                print(f"Checking position: ({x}, {y})")
                 if self.CanMove(self.map[x][y]):
                     successors.append(self.CreateNode(successors, node, x, y))
         
@@ -77,8 +78,25 @@ class BCProblem(Problem):
     # nos dice si podemos movernos hacia una casilla, se debe poner el valor de la casilla como
     # parámetro
     @staticmethod
+    def GetValueText(value):
+        return {
+            AgentConsts.NOTHING: "NOTHING",
+            AgentConsts.UNBREAKABLE: "UNBREAKABLE",
+            AgentConsts.BRICK: "BRICK",
+            AgentConsts.COMMAND_CENTER: "COMMAND_CENTER",
+            AgentConsts.PLAYER: "PLAYER",
+            AgentConsts.SHELL: "SHELL",
+            AgentConsts.OTHER: "OTHER",
+            AgentConsts.LIFE: "LIFE",
+            AgentConsts.SEMI_BREKABLE: "SEMI_BREKABLE",
+            AgentConsts.SEMI_UNBREKABLE: "SEMI_UNBREKABLE"
+        }.get(value, "UNKNOWN")
+
+    @staticmethod
     def CanMove(value):
-        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE # and value != AgentConsts.SEMI_UNBREKABLE
+        value_text = BCProblem.GetValueText(value)
+        print(f"CanMove check for value: {value} ({value_text})")
+        return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE
     
     #convierte coordenadas mapa en formato vector a matriz
     @staticmethod
@@ -140,7 +158,7 @@ class BCProblem(Problem):
             if value==AgentConsts.NOTHING:#0
                 return 2
             elif value==AgentConsts.BRICK:#2
-                return 2
+                return 3
             elif value==AgentConsts.PLAYER:#4
                 return 10
             elif value==AgentConsts.OTHER:#6
