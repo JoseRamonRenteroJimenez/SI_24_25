@@ -12,15 +12,25 @@ class Attack(State):
         self.directionToLook = -1
 
     def Update(self, perception, map, agent):
+        #suponemos que miramos al objetivo
         self.directionToLook=agent.directionToLook
 
+
+        dispara= False
+        movimiento=0
+        #si podemos atacamos
+        if perception[AgentConsts.CAN_FIRE]:
+            dispara=True
         
-        return 0, True
+        # TODO ¿posible evasión? según mis observaciones funciona muy bien tal y como está 
+        # sin un modo huida aún asi dejo la variable movimiento en caso de implementación para facil lectura
+        
+        return movimiento, dispara
 
     def Transit(self,perception, map):
         target = perception[self.directionToLook]
         #si mi target ya no está vuelvo a ExecutePlan
-        if target != AgentConsts.PLAYER or target != AgentConsts.COMMAND_CENTER:
+        if target != AgentConsts.PLAYER or target != AgentConsts.COMMAND_CENTER or  target != AgentConsts.SHELL:
             return "ExecutePlan"
         return self.id
     

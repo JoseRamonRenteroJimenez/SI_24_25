@@ -28,7 +28,8 @@ class GoalOrientedAgent(BaseAgent):
 
     #Metodo que se llama al iniciar el agente. No devuelve nada y sirve para contruir el agente
     def Start(self):
-        print("Inicio del agente ")
+        if(AgentConsts.VERVOSE_MODE>=0):
+            print("Inicio del agente ")
         self.stateMachine.Start(self)
         self.problem = None
         self.aStar = None
@@ -66,7 +67,8 @@ class GoalOrientedAgent(BaseAgent):
     
     #método interno que encapsula la creació nde un plan
     def _CreatePlan(self, perception, map):
-        #print("Estoy creando un plan")
+        if(AgentConsts.VERVOSE_MODE>=0):
+            print("Estoy creando un plan")
         # 1) refrescar el mapa en el problema
         self.problem.InitMap(map)
 
@@ -83,7 +85,8 @@ class GoalOrientedAgent(BaseAgent):
         self.aStar = AStar(self.problem)
         plan = self.aStar.GetPlan() or []   # siempre lista
 
-        #print(f"Plan de longitud {len(plan)}")
+        if(AgentConsts.VERVOSE_MODE>=3):
+            print(f"Plan de longitud {len(plan)}")
         return plan
         '''
         #currentGoal = self.problem.GetGoal()
@@ -137,7 +140,8 @@ class GoalOrientedAgent(BaseAgent):
         # - inicializamos el mapa problem.InitMap
         # - inicializamos A*
         # - creamos un plan inicial
-        print("Init Goal Oriented Agent")
+        if(AgentConsts.VERVOSE_MODE>=0):
+            print("Init Goal Oriented Agent")
         #Creamos el nodo inicial a partir de la percepción actual
         initialNode = self._CreateInitialNode(perception)
         #Creamos la meta por defecto (Command center) como el objetivo inicial 
@@ -147,7 +151,8 @@ class GoalOrientedAgent(BaseAgent):
         self.problem = BCProblem(initialNode, goal1CommanCenter, xSize, ySize)
         #Inicializamos el mapa con los datos recibidos
         self.problem.InitMap(map)
-        print("Mapa cargado")
+        if(AgentConsts.VERVOSE_MODE>=0):
+            print("Mapa cargado")
         #Inicializamos el A* con el problema creado
         self.aStar = AStar(self.problem)
         
@@ -157,7 +162,8 @@ class GoalOrientedAgent(BaseAgent):
         self.goalMonitor = GoalMonitor(self.problem, [goal1CommanCenter, goal2Life, goal3Player])
         #Creamos un par inicial a partir de pa percepción y el mapa
         self.plan = self._CreatePlan(perception, map)
-        print("Plan inicial generado")
+        if(AgentConsts.VERVOSE_MODE>=0):
+            print("Plan inicial generado")
         GoalOrientedAgent.ShowPlan(self.plan)
         self.agentInit = True
 
@@ -165,7 +171,8 @@ class GoalOrientedAgent(BaseAgent):
     @staticmethod
     def ShowPlan(plan):
         for n in plan:
-            print("X: ",n.x,"Y:",n.y,"[",n.value,"]{",n.G(),"} => ")
+            if(AgentConsts.VERVOSE_MODE>=0):
+                print("X: ",n.x,"Y:",n.y,"[",n.value,"]{",n.G(),"} => ")
 
     def GetPlan(self):
         return self.plan

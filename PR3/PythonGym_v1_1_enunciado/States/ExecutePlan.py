@@ -30,7 +30,8 @@ class ExecutePlan(State):
         #Si no tengo un plan para conseguir mis objetivos, me quedo quieto y recalculo.
         if len(plan) == 0 : 
             agent.goalMonitor.ForceToRecalculate()
-            print("\033[92mNo tengo plan\033[0m")
+            if(AgentConsts.VERVOSE_MODE>=3):
+                print("\033[92mNo tengo plan\033[0m")
             return AgentConsts.NO_MOVE,False
         
         nextNode = plan[0]
@@ -42,10 +43,31 @@ class ExecutePlan(State):
             nextNode = plan[0]
         goal = agent.problem.GetGoal()
         ## si estoy a distancia 1 del objetivo me paro
-        if  len(plan) <= 2 and (goal.value == AgentConsts.PLAYER or goal.value == AgentConsts.COMMAND_CENTER): 
+        if  len(plan) <= 1 and (goal.value == AgentConsts.PLAYER or goal.value == AgentConsts.COMMAND_CENTER): 
             self.transition = "Attack"
             move = self.GetDirection(nextNode,x,y)
             agent.directionToLook = move-1 ## la percepción es igual que el movimiento pero restando 1                
+            shot = self.lastMove == move and perception[AgentConsts.CAN_FIRE] == 1
+        ## amenazas detectadas
+        elif perception[AgentConsts.NEIGHBORHOOD_UP]==AgentConsts.PLAYER or perception[AgentConsts.NEIGHBORHOOD_UP]==AgentConsts.SHELL:
+            self.transition = "Attack"
+            move = AgentConsts.MOVE_UP
+            agent.directionToLook = move-1
+            shot = self.lastMove == move and perception[AgentConsts.CAN_FIRE] == 1
+        elif perception[AgentConsts.NEIGHBORHOOD_DOWN]==AgentConsts.PLAYER or perception[AgentConsts.NEIGHBORHOOD_DOWN]==AgentConsts.SHELL:
+            self.transition = "Attack"
+            move = AgentConsts.MOVE_DOWN
+            agent.directionToLook = move-1
+            shot = self.lastMove == move and perception[AgentConsts.CAN_FIRE] == 1
+        elif perception[AgentConsts.NEIGHBORHOOD_LEFT]==AgentConsts.PLAYER or perception[AgentConsts.NEIGHBORHOOD_LEFT]==AgentConsts.SHELL:
+            self.transition = "Attack"
+            move = AgentConsts.MOVE_LEFT
+            agent.directionToLook = move-1
+            shot = self.lastMove == move and perception[AgentConsts.CAN_FIRE] == 1
+        elif perception[AgentConsts.NEIGHBORHOOD_RIGHT]==AgentConsts.PLAYER or perception[AgentConsts.NEIGHBORHOOD_RIGHT]==AgentConsts.SHELL:
+            self.transition = "Attack"
+            move = AgentConsts.MOVE_RIGHT
+            agent.directionToLook = move-1
             shot = self.lastMove == move and perception[AgentConsts.CAN_FIRE] == 1
         else:
             move = self.GetDirection(nextNode,x,y)

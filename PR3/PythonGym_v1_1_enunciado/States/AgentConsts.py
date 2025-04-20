@@ -44,3 +44,5 @@ class AgentConsts:
     TOLERANCIA=0.17
     DISTANCIA_AGRESIVIDAD=5
     TIEMPOREPLANING=2
+    #0 = modo de serie, 2 = GoalMonitor, 3= Longitud del plan + coste heurística + check de posición + check de movimiento
+    VERVOSE_MODE=0

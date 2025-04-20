@@ -57,22 +57,24 @@ class GoalMonitor:
         # no ha sido elegido el plan plan_agente_jugador
         plan_agente_command_center=self.goals != self.GOAL_COMMAND_CENTRER and not plan_agente_jugador and not plan_agente_vida
 
-
-        #print("vida tomada ?",vidaTomada)
-        #print("meta = self.goal_life ?",plan_agente_vida)
+        if(AgentConsts.VERVOSE_MODE>=2):
+            print("vida tomada ?",vidaTomada)
+            print("meta = self.goal_life ?",plan_agente_vida)
 
         if(vidaTomada and not self.vidaOut):
-            #print("--------------------Forzar recalculo por vida tomada--------------------")
+            if(AgentConsts.VERVOSE_MODE>=2):
+                print("--------------------Forzar recalculo por vida tomada--------------------")
             self.vidaOut=True
             self.recalculate=True
 
         if self.recalculate or (plan_agente_jugador or plan_agente_vida or plan_agente_command_center) and perception[AgentConsts.TIME]>=self.lastTime+AgentConsts.TIEMPOREPLANING:
-            #print("plan_agente_jugador=",plan_agente_jugador,"plan_agente_vida=",plan_agente_vida,"plan_agente_command_center",plan_agente_command_center)
+            if(AgentConsts.VERVOSE_MODE>=2):
+                print("plan_agente_jugador=",plan_agente_jugador,"plan_agente_vida=",plan_agente_vida,"plan_agente_command_center",plan_agente_command_center)
 
             self.lastTime = perception[AgentConsts.TIME]
             self.recalculate=False
             return True
-            ##return True
+
         return False
     
     #selecciona la meta mas adecuada al estado actual
@@ -93,14 +95,17 @@ class GoalMonitor:
 
         #si estamos a menos de DISTANCIA_AGRESIVIDAD seteamos la meta a jugador
         if per_A_J_X+per_A_J_Y<=AgentConsts.DISTANCIA_AGRESIVIDAD and self.goals:
-            print("\n----------Plan de player seleccionado----------\n")
+            if(AgentConsts.VERVOSE_MODE>=2):
+                print("\n----------Plan de player seleccionado----------\n")
             return self.goals[self.GOAL_PLAYER]
         #estamos mas cerca de la vida que el jugador (vamos a robarsela muajajaja)
         if per_J_H_X+per_J_H_Y>per_A_H_X+per_A_H_Y and perception[AgentConsts.LIFE_Y] + perception[AgentConsts.LIFE_X]>=0:
-            print("\n----------Plan de vida seleccionado----------\n")  
+            if(AgentConsts.VERVOSE_MODE>=2):
+                print("\n----------Plan de vida seleccionado----------\n")  
             return self.goals[self.GOAL_LIFE]
         #por defecto queremos romper command center
-        print("\n----------Plan de Command Center seleccionado----------\n")
+        if(AgentConsts.VERVOSE_MODE>=2):
+            print("\n----------Plan de Command Center seleccionado----------\n")
         return self.goals[self.GOAL_COMMAND_CENTRER]
     
     def UpdateGoals(self,goal, goalId):
