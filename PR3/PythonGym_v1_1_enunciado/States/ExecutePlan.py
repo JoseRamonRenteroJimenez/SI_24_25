@@ -18,18 +18,23 @@ class ExecutePlan(State):
     def Update(self, perception, map, agent):
         shot = False
         move = self.lastMove
+        #posición del agente
         xW = perception[AgentConsts.AGENT_X]
         yW = perception[AgentConsts.AGENT_Y]
+
         x,y = BCProblem.WorldToMapCoordFloat(xW,yW,agent.problem.ySize)
+
         # si estas en el nodo = lo elimino para poder seguir con el siguiente, si me quedo sin nodos, es que he llegado ahora me puede interesar quedarme a 2 nodos.
         plan = agent.GetPlan()
-        if len(plan) == 0 : # no tengo un plan para conseguir mis objetivos, me quedo quieto.
+        
+        #Si no tengo un plan para conseguir mis objetivos, me quedo quieto y recalculo.
+        if len(plan) == 0 : 
             agent.goalMonitor.ForceToRecalculate()
             print("\033[92mNo tengo plan\033[0m")
             return AgentConsts.NO_MOVE,False
         
         nextNode = plan[0]
-        if self.IsInNode(nextNode,x,y,0.17) and len(plan) > 1:
+        if self.IsInNode(nextNode,x,y,AgentConsts.TOLERANCIA) and len(plan) > 1:
             plan.pop(0) #este nodo ya no me vale
             if len(plan) == 0: # si al llegar al punto ya no hay nada mas que hacer me paro e indico que se recalcule
                 agent.goalMonitor.ForceToRecalculate()
@@ -37,7 +42,7 @@ class ExecutePlan(State):
             nextNode = plan[0]
         goal = agent.problem.GetGoal()
         ## si estoy a distancia 1 del objetivo me paro
-        if  len(plan) <= 1 and (goal.value == AgentConsts.PLAYER or goal.value == AgentConsts.COMMAND_CENTER): 
+        if  len(plan) <= 2 and (goal.value == AgentConsts.PLAYER or goal.value == AgentConsts.COMMAND_CENTER): 
             self.transition = "Attack"
             move = self.GetDirection(nextNode,x,y)
             agent.directionToLook = move-1 ## la percepción es igual que el movimiento pero restando 1                

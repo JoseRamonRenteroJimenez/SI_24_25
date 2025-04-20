@@ -2,7 +2,7 @@ from StateMachine.State import State
 from States.AgentConsts import AgentConsts
 
 #Estado que nos permite atacar un objetivos desde la celda adyacente.
-# se espera que el agente ay esté orientado
+# se espera que el agente ya esté orientado
 #agent.directionToLook es seteado por ExecutePlan para indicarnos cual es la dirección
 #donde está el enemigo a atacar
 class Attack(State):
@@ -13,6 +13,8 @@ class Attack(State):
 
     def Update(self, perception, map, agent):
         self.directionToLook=agent.directionToLook
+
+        
         return 0, True
 
     def Transit(self,perception, map):

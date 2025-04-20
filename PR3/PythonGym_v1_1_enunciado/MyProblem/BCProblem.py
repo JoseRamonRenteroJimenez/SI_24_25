@@ -41,7 +41,7 @@ class BCProblem(Problem):
         '''
         #TODO EN PRUEBAS: heurística del nodo
         h = abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
-        print(f"Heurística H = {h}")
+        #print(f"Coste de Heurística H = {h}")
         return h
 
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
@@ -53,7 +53,7 @@ class BCProblem(Problem):
             x = node.x + newX
             y = node.y + newY
             if x >= 0 and x < self.xSize and y >= 0 and y < self.ySize:
-                print(f"Checking position: ({x}, {y})")
+                #print(f"Checking position: ({x}, {y})")
                 if self.CanMove(self.map[x][y]):
                     successors.append(self.CreateNode(successors, node, x, y))
         
@@ -71,7 +71,7 @@ class BCProblem(Problem):
         if(self.CanMove(self.map[node.x+1][node.y]) and node.x+1<self.xSize):
             successors.append(self.CreateNode(successors, node, node.x+1, node.y))
         '''
-        print("Aqui falta ncosas por hacer :) ")
+        #print("Aqui falta ncosas por hacer :) ")
         return successors[::-1]
     
     # métodos estáticos
@@ -95,7 +95,7 @@ class BCProblem(Problem):
     @staticmethod
     def CanMove(value):
         value_text = BCProblem.GetValueText(value)
-        print(f"CanMove check for value: {value} ({value_text})")
+        #print(f"CanMove check for value: {value} ({value_text})")
         return value != AgentConsts.UNBREAKABLE and value != AgentConsts.SEMI_UNBREKABLE
     
     #convierte coordenadas mapa en formato vector a matriz

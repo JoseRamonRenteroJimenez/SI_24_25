@@ -39,3 +39,8 @@ class AgentConsts:
     LIFE = 7
     SEMI_BREKABLE = 8
     SEMI_UNBREKABLE = 9
+
+    #variables de configuración
+    TOLERANCIA=0.17
+    DISTANCIA_AGRESIVIDAD=5
+    TIEMPOREPLANING=2

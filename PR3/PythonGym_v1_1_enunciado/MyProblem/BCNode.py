@@ -17,9 +17,10 @@ class BCNode(Node):
         return False
 
     # Operaciones propias añadidas
+    #comparamos 2 nodos por su coste
     def __lt__(self, other):    
         return self.F() < other.F()
-    
+    #comparamos 2 nodos por sus coordenadas ( usado para no expandir nodos ya procesados)
     def __eq__(self, other):
         return isinstance(other, BCNode) and self.x == other.x and self.y == other.y
     

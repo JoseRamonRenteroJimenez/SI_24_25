@@ -10,33 +10,30 @@ class AStar:
         self.problem = problem # problema a resolver
 
     def GetPlan(self):
-        #TODO EN PRUEBAS implementar el algoritmo A*
-        #cosas a tener en cuenta:
-        #Si el número de sucesores es 0 es que el algoritmo no ha encontrado una solución, devolvemos el path vacio []
-        #Hay que invertir el path para darlo en el orden correcto al devolverlo (path[::-1])
-        #GetSucesorInOpen(sucesor) nos devolverá None si no lo encuentra, si lo encuentra
-        #es que ese sucesor ya está en la frontera de exploración, DEBEMOS MIRAR SI EL NUEVO COSTE ES MENOR QUE EL QUE TENIA ALMACENADO
-        #SI esto es asi, hay que cambiarle el padre y setearle el nuevo coste.
-        # mientras no encontremos la meta y haya elementos en open....
-        # TODO EN PRUEBAS implementar el bucle de búsqueda del algoritmo A*
         
+        #limpiamos la lista de nodos abiertos y la de procesados
         self.open.clear()
         self.precessed.clear()
         
+        #iniciamos el recorrido con el nodo inicial (en el que se encuentra el tanque en ese momento)
         nodoObj = self.problem.Initial()
         self._ConfigureNode(nodoObj, None, 0)
+        #usamos heap para que esté ordenado
         heapq.heappush(self.open, (nodoObj.F(), nodoObj))
         
         while len(self.open) > 0:
-            #TODO EN PRUEBAS: Ordenar la lista de abiertos
+            #f= variable auxiliar sin uso, nodoObj= el nodo con mayor prioridad
             f, nodoObj = heapq.heappop(self.open)
 
+            #si el nodo ya fué procesado nos lo saltamos
             if nodoObj in self.precessed:
                 continue
             
+            #si el nodo es la meta, devolvemos el camino
             if nodoObj == self.problem.GetGoal():
                 return self.ReconstructPath(nodoObj)[::-1]
             
+            #añadimos el nodo a procesados y conseguimos sus sucesores
             self.precessed.add(nodoObj)
             sucesores = self.problem.GetSucessors(nodoObj)
             
@@ -56,7 +53,7 @@ class AStar:
                 abierto = self.GetSucesorInOpen(s)
                 
                 if abierto is None:
-                    # TODO Configurar nodo????
+                    # TODO EN PRUEBAS Configuración del nodo
                     self._ConfigureNode(s, nodoObj, g)
                     heapq.heappush(self.open, (s.F(), s))
                 elif g < abierto.G():

@@ -53,10 +53,12 @@ class GoalOrientedAgent(BaseAgent):
         
         action, shot = self.stateMachine.Update(perception, map, self)
 
-        #Actualizamos el plan refrescando la posición del player (meta 2)
+        #Actualizamos el plan refrescando la posición del player (meta 2), las demás en principio no se actualizan
 
         goal3Player = self._CreatePlayerGoal(perception)
         self.goalMonitor.UpdateGoals(goal3Player,2)
+
+
         if self.goalMonitor.NeedReplaning(perception,map,self):
             #self.problem.InitMap(map) ## refrescamos el mapa
             self.plan=self._CreatePlan(perception, map)
@@ -64,7 +66,7 @@ class GoalOrientedAgent(BaseAgent):
     
     #método interno que encapsula la creació nde un plan
     def _CreatePlan(self, perception, map):
-        print("Estoy creando un plan")
+        #print("Estoy creando un plan")
         # 1) refrescar el mapa en el problema
         self.problem.InitMap(map)
 
@@ -81,7 +83,7 @@ class GoalOrientedAgent(BaseAgent):
         self.aStar = AStar(self.problem)
         plan = self.aStar.GetPlan() or []   # siempre lista
 
-        print(f"Plan de longitud {len(plan)}")
+        #print(f"Plan de longitud {len(plan)}")
         return plan
         '''
         #currentGoal = self.problem.GetGoal()
