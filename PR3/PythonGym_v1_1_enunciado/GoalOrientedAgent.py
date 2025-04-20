@@ -88,29 +88,6 @@ class GoalOrientedAgent(BaseAgent):
         if(AgentConsts.VERVOSE_MODE>=3):
             print(f"Plan de longitud {len(plan)}")
         return plan
-        '''
-        #currentGoal = self.problem.GetGoal()
-        if self.goalMonitor != None:
-            # TODO creamos un plan, pasos:
-            # -con gualMonito, seleccionamos la meta actual (Que será la mas propicia => definir la estrategia a seguir).
-            # -le damos el modo inicial _CreateInitialNode
-            # -establecer la meta actual al problema para que A* sepa cual es.
-            # -Calcular el plan usando A*
-            print("TODO aqui faltan cosas :)")
-            
-            
-            nodoInicialX, nodoInicialY = perception[AgentConsts.AGENT_X],perception[AgentConsts.AGENT_Y]
-            currentPlan = self.goalMonitor.SelectGoal()
-            nodoMetaX, nodoMetaY = currentPlan.x, currentPlan.y
-            self.problem.initial.x, self.problem.initial.y = nodoInicialX, nodoInicialY
-            self.problem.goal.x, self.problem.goal.y = nodoMetaX, nodoMetaY
-            
-            # Atención // Esto necesita revisión
-            if self.problem.goal.monitor != None:
-                self.problem.goal.monitor = self.goalMonitor
-        return self.aStar.GetPlan()
-        
-        '''
         
     @staticmethod
     def CreateNodeByPerception(perception, value, perceptionID_X, perceptionID_Y,ySize):

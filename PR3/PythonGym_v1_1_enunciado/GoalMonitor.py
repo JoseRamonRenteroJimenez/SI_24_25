@@ -20,9 +20,6 @@ class GoalMonitor:
     #determina si necesitamos replanificar
     def NeedReplaning(self, perception, map, agent):
 
-        #TODO EN PRUEBAS definir la estrategia de cuando queremos recalcular
-        #puede ser , por ejemplo cada cierto tiempo o cuanod tenemos poca vida.
-
         #distancia entre agente y jugador en X e Y
         per_A_J_X= abs(perception[AgentConsts.PLAYER_X]-perception[AgentConsts.AGENT_X])
         per_A_J_Y= abs(perception[AgentConsts.PLAYER_Y]-perception[AgentConsts.AGENT_Y])
@@ -40,18 +37,21 @@ class GoalMonitor:
         per_A_CC_Y= abs(perception[AgentConsts.AGENT_Y]-perception[AgentConsts.COMMAND_CENTER_Y])
 
         vidaTomada=perception[AgentConsts.LIFE_X] + perception[AgentConsts.LIFE_Y]<0
+        
         # Estamos en la misma columna/ fila que jugador + 
         # a DISTANCIA_AGRESIVIDAD o menos +
         # teniendo 2 vidas o no hay vidas disponibles + 
         # el plan no es ya este mismo + 
         # estamos mas cerca de player que de command center
         plan_agente_jugador=(per_A_J_X ==0 or per_A_J_Y == 0) and per_A_J_X + per_A_J_Y <= AgentConsts.DISTANCIA_AGRESIVIDAD and self.goals !=self.GOAL_PLAYER and (perception[AgentConsts.HEALTH]>=2 or self.vidaOut) and (per_A_CC_X + per_A_CC_Y >per_A_J_X + per_A_J_Y)
+        
         # Estamos más cerca que player de la vida o tenemos 1 vida (modo supervivencia ON) + 
         # hay disponible una vida extra + 
         # el plan no esta este mismo + 
         # no se ha seleccionado plan_agente_jugador +
         # estamos mas cerca de la vida que de command center
         plan_agente_vida=(per_A_H_X + per_A_H_Y < per_J_H_X+ per_J_H_Y or perception[AgentConsts.HEALTH]<2 ) and self.goals !=self.GOAL_LIFE and not plan_agente_jugador and (per_A_CC_X + per_A_CC_Y >per_A_H_X + per_A_H_Y)and not self.vidaOut
+        
         # El plan no es ya este + 
         # no ha sido elegido el plan_agente_vida + 
         # no ha sido elegido el plan plan_agente_jugador
@@ -79,7 +79,7 @@ class GoalMonitor:
     
     #selecciona la meta mas adecuada al estado actual
     def SelectGoal(self, perception, map, agent):
-        #TODO EN PRUEBAS definir la estrategia del cambio de meta
+        #definición la estrategia del cambio de meta
 
         #distancia entre agente y jugador en X e Y
         per_A_J_X= abs(perception[AgentConsts.PLAYER_X]-perception[AgentConsts.AGENT_X])
@@ -98,11 +98,13 @@ class GoalMonitor:
             if(AgentConsts.VERVOSE_MODE>=2):
                 print("\n----------Plan de player seleccionado----------\n")
             return self.goals[self.GOAL_PLAYER]
+        
         #estamos mas cerca de la vida que el jugador (vamos a robarsela muajajaja)
         if per_J_H_X+per_J_H_Y>per_A_H_X+per_A_H_Y and perception[AgentConsts.LIFE_Y] + perception[AgentConsts.LIFE_X]>=0:
             if(AgentConsts.VERVOSE_MODE>=2):
                 print("\n----------Plan de vida seleccionado----------\n")  
             return self.goals[self.GOAL_LIFE]
+        
         #por defecto queremos romper command center
         if(AgentConsts.VERVOSE_MODE>=2):
             print("\n----------Plan de Command Center seleccionado----------\n")

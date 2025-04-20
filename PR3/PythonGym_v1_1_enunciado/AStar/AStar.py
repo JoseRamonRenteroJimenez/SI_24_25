@@ -53,7 +53,6 @@ class AStar:
                 abierto = self.GetSucesorInOpen(s)
                 
                 if abierto is None:
-                    # TODO EN PRUEBAS Configuración del nodo
                     self._ConfigureNode(s, nodoObj, g)
                     heapq.heappush(self.open, (s.F(), s))
                 elif g < abierto.G():
@@ -69,9 +68,6 @@ class AStar:
         node.SetParent(parent)
         node.SetG(newG)
         node.SetH(self.problem.Heuristic(node))
-        #TODO EN PRUEBAS Setearle la heuristica que está implementada en el problema. (si ya la tenía será la misma pero por si reutilizais este método para otras cosas)
-        #if(node.parent != None):
-        #    node.SetH(parent.H)
 
     #nos dice si un sucesor está en abierta. Si esta es que ya ha sido expandido y tendrá un coste, comprobar que le nuevo camino no es más eficiente
     #En caso de serlos, _ConfigureNode para setearle el nuevo padre y el nuevo G, asi como su heurística
@@ -90,7 +86,7 @@ class AStar:
     def ReconstructPath(self, goal):
         path = []
         node = goal
-        #TODO EN PRUEBAS devuelve el path invertido desde la meta hasta que el padre sea None.
+        #devuelve el path invertido desde la meta hasta que el padre sea None.
         while node != None:
             path.append(node)
             node = node.parent

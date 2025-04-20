@@ -39,7 +39,7 @@ class BCProblem(Problem):
         Calcula la heurística del nodo en base a la distancia Manhattan entre el nodo y el objetivo.
         abs(node.x - self.x) + abs(node.y- self.y)
         '''
-        #TODO EN PRUEBAS: heurística del nodo
+        #heurística del nodo Manhatthan
         h = abs(node.x - self.goal.x) + abs(node.y - self.goal.y)
         if(AgentConsts.VERVOSE_MODE>=3):
             print(f"Coste de Heurística H = {h}")
@@ -48,7 +48,7 @@ class BCProblem(Problem):
     #Genera la lista de sucesores del nodo (Se necesita reimplementar)
     def GetSucessors(self, node):
         successors = []
-        # TODO: sucesores de un nodo dado
+        # sucesores de un nodo dado
         
         for newX, newY in ((0, -1), (-1, 0), (0, 1), (1, 0)):
             x = node.x + newX
@@ -58,21 +58,6 @@ class BCProblem(Problem):
                     print(f"Checking position: ({x}, {y})")
                 if self.CanMove(self.map[x][y]):
                     successors.append(self.CreateNode(successors, node, x, y))
-        
-        '''
-        # Arriba
-        if(self.CanMove(self.map[node.x][node.y-1]) and node.y-1>=0):
-            successors.append(self.CreateNode(successors, node, node.x, node.y-1))
-        # Abajo
-        if(self.CanMove(self.map[node.x][node.y+1]) and node.y+1<self.ySize):
-            successors.append(self.CreateNode(successors, node, node.x, node.y+1))
-        # Izquierda
-        if(self.CanMove(self.map[node.x-1][node.y]) and node.x-1>=0):
-            successors.append(self.CreateNode(successors, node, node.x-1, node.y))
-        # Derecha
-        if(self.CanMove(self.map[node.x+1][node.y]) and node.x+1<self.xSize):
-            successors.append(self.CreateNode(successors, node, node.x+1, node.y))
-        '''
         return successors[::-1]
     
     # métodos estáticos
@@ -142,18 +127,6 @@ class BCProblem(Problem):
     #se utiliza para calcular el coste de cada elemento del mapa 
     @staticmethod
     def GetCost(value):
-        #TODO: debes darle un coste a cada tipo de casilla del mapa.
-
-        ##NOTHING = 0
-        ##UNBREAKABLE = 1
-        ##BRICK = 2
-        ##COMMAND_CENTER = 3
-        ##PLAYER = 4
-        ##SHELL = 5 
-        ##OTHER = 6
-        ##LIFE = 7
-        ##SEMI_BREKABLE = 8
-        ##SEMI_UNBREKABLE = 9
         
         #optimización a base de descartar la mitad de los operandos
         if(value%2==0):
@@ -161,9 +134,9 @@ class BCProblem(Problem):
                 return 2
             elif value==AgentConsts.BRICK:#2
                 return 3
-            elif value==AgentConsts.PLAYER:#4
+            elif value==AgentConsts.PLAYER:#4   este elemento no se muestra en el mapa (añadido por si en una actualización si se contemplase)
                 return 10
-            elif value==AgentConsts.OTHER:#6
+            elif value==AgentConsts.OTHER:#6    este elemento no se muestra en el mapa (añadido por si en una actualización si se contemplase)
                 return 6
             elif value==AgentConsts.SEMI_BREKABLE:#8
                 return sys.maxsize
@@ -174,7 +147,7 @@ class BCProblem(Problem):
                 return sys.maxsize
             elif value==AgentConsts.COMMAND_CENTER:#3
                 return 0
-            elif value== AgentConsts.SHELL:#5
+            elif value== AgentConsts.SHELL:#5   este elemento no se muestra en el mapa (añadido por si en una actualización si se contemplase)
                 return 0
             elif value== AgentConsts.LIFE:#7
                 return 0

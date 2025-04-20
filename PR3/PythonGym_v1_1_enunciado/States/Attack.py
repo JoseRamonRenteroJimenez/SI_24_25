@@ -22,8 +22,7 @@ class Attack(State):
         if perception[AgentConsts.CAN_FIRE]:
             dispara=True
         
-        # TODO ¿posible evasión? según mis observaciones funciona muy bien tal y como está 
-        # sin un modo huida aún asi dejo la variable movimiento en caso de implementación para facil lectura
+        # Se ha descartado la función de huida debido a su ineficacia, aún asi se proporciona soporte para decisión de movimiento (aunque no se utilice por ahora)
         
         return movimiento, dispara
 
